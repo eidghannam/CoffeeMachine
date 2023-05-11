@@ -4,13 +4,15 @@
  */
 package com.mycompany.mavenproject2;
 
+import java.io.Serializable;
+
 /**
  *
  * @author sky
  * 
  */
 
-public class WaterTank {
+public class WaterTank implements Serializable{
     private final int tank_capacity=500;
     private int level;
     

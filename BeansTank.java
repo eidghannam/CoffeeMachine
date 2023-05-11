@@ -4,16 +4,14 @@
  */
 package com.mycompany.mavenproject2;
 
+import java.io.Serializable;
+
 /**
  *
  * @author sky
  */
-public class BeansTank {
-     private int arabica_beans;
-
-    public void setTotal_beans(int total_beans) {
-        this.total_beans = total_beans;
-    }
+public class BeansTank implements Serializable{
+    private int arabica_beans;
     private int robusta_beans;
     private int total_beans;
     private final int tank_capacity=500;
@@ -22,6 +20,9 @@ public class BeansTank {
         return total_beans;
     }
 
+    public void setTotal_beans(int total_beans) {
+        this.total_beans = total_beans;
+    }
     public int getTank_capacity() {
         return tank_capacity;
     }

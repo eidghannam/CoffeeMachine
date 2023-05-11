@@ -4,40 +4,70 @@
  */
 package com.mycompany.mavenproject2;
 
+import java.io.EOFException;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author sky
  */
-public class CoffeeMachine {
+public class CoffeeMachine implements Serializable{
     private WaterTank waterTank;
     private BeansTank beansTank;
+    private WasteTray wasteTray;
+    private Logger logger;
     int[][] BeansShots ={{7,7},{14,14}};     //{{Espresso Single,Amrecano Single},{Espresso Double,Amricano Double}}
     int[][] WaterShots={{30,170},{60,220}};  //{{Espresso Single,Amrecano Single},{Espresso Double,Amrecano Double}}
-    private boolean is_clean;
-    private int clean_counter=0;
+    private  int cupCounter=0;
+    private  int cleanCounter=0;
 
-    public boolean isIs_clean() {
-        return (clean_counter<=4);
+    public int getCupCounter() {
+        return cupCounter;
     }
 
-    public void setIs_clean(boolean is_clean) {
-        this.is_clean = is_clean;
+    public void setCupCounter(int cupCounter) {
+        this.cupCounter = cupCounter;
     }
 
-    public int getClean_counter() {
-        return clean_counter;
+    public int getCleanCounter() {
+        return cleanCounter;
     }
 
-    public void setClean_counter(int clean_counter) {
-        this.clean_counter = clean_counter;
+    public void setCleanCounter(int cleanCounter) {
+        this.cleanCounter = cleanCounter;
     }
     
+
+    public WasteTray getWasteTray() {
+        return wasteTray;
+    }
+
+    public void setWasteTray(WasteTray wasteTray) {
+        this.wasteTray = wasteTray;
+    }
+
+    public Logger getLogger() {
+        return logger;
+    }
+
+    public void setLogger(Logger logger) {
+        this.logger = logger;
+    }
+    //WaterTank wt=new WaterTank();
     
-    
-    
-    public CoffeeMachine(int waterLevel,int arabica_level,int robusta_level){
+    public CoffeeMachine(int waterLevel,int arabica_level,int robusta_level,Logger logger){
         this.waterTank=new WaterTank(waterLevel);
         this.beansTank=new BeansTank(arabica_level,robusta_level);
+        this.wasteTray=new WasteTray();
+        this.logger=logger;
+        this.cupCounter=0;
+        this.cleanCounter=0;
     }
     
     public void  Start() throws EmptyMachineException,EmptyBeansTankException,EmptyWaterTankException{
@@ -56,7 +86,7 @@ public class CoffeeMachine {
         }
         else
         {
-            System.out.println("the machine is ready to start");
+            //System.out.println("the machine is ready to start");
         }
            
         
@@ -75,6 +105,9 @@ public class CoffeeMachine {
                    throw new NoEnoughWaterException("no enough water");
                else
                    waterTank.withdraw(WaterShots[0][0]);
+               
+               this.logger.log("espresso Single\n");
+               this.cupCounter++;
                break;
            case 2:
                if(this.beansTank.getTotal_beans()<BeansShots[0][1])
@@ -86,6 +119,8 @@ public class CoffeeMachine {
                    throw new NoEnoughWaterException("no enough water");
                else
                    waterTank.withdraw(WaterShots[0][1]);
+               this.logger.log("Amricano Single\n");
+               this.cupCounter++;
                break;
            case 3:
                if(this.beansTank.getTotal_beans()<BeansShots[1][0])
@@ -97,6 +132,8 @@ public class CoffeeMachine {
                    throw new NoEnoughWaterException("no enough water");
                else
                    waterTank.withdraw(WaterShots[1][0]);
+               this.logger.log("espresso Double\n");
+               this.cupCounter++;
                break;
            case 4:
               if(this.beansTank.getTotal_beans()<BeansShots[1][1])
@@ -108,9 +145,12 @@ public class CoffeeMachine {
                    throw new NoEnoughWaterException("no enough water");
                else
                    waterTank.withdraw(WaterShots[1][1]);
+               this.logger.log("Amricano Double\n");
+               this.cupCounter++;
                break;
        }
-       clean_counter++;
+       this.wasteTray.setClean_counter(this.wasteTray.getClean_counter()+1);
+       
        
     }
     public double amountOfCaffeine(int typeNum){
@@ -135,18 +175,7 @@ public class CoffeeMachine {
         return 0;
         
     }
-    /*public void addCoffeeBeans(int arabica,int robusta)throws BeansTankOverflowException{
-        this.beansTank.addBeans(arabica, robusta);
-    }*/
     
-   /* public void addWater(int amount) throws WaterTankOverflowException{
-        this.waterTank.fill(amount);
-    }*/
-    public void clean_waste_tray(char clean){
-       if(clean != '0')
-           this.clean_counter=0;
-    }
-
     public WaterTank getWaterTank() {
         return waterTank;
     }
@@ -162,5 +191,5 @@ public class CoffeeMachine {
     public void setBeansTank(BeansTank beansTank) {
         this.beansTank = beansTank;
     }
-   
+    
 }

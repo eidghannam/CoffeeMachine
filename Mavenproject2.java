@@ -13,7 +13,9 @@ import java.util.Scanner;
 public class Mavenproject2 {
 
     public static void main(String[] args) {
-        Scanner input=new Scanner(System.in);
+        
+    }
+        /*Scanner input=new Scanner(System.in);
        CoffeeMachine Cmachine=new CoffeeMachine(500,200,300);
        int choice;
        System.out.println("1- add water");
@@ -52,7 +54,7 @@ public class Mavenproject2 {
                }
                break;
            case 3:
-               if(Cmachine.isIs_clean()==true)
+               //if(Cmachine.isIs_clean()==true)
                {
                  try{
                  Cmachine.Start();
@@ -159,5 +161,5 @@ public class Mavenproject2 {
        choice=input.nextInt();
        }
        
-    }
+    }*/
 }
